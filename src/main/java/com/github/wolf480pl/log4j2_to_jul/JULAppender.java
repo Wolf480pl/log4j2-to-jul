@@ -37,11 +37,13 @@ import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.logging.log4j.spi.AbstractLogger;
 import org.apache.logging.log4j.status.StatusLogger;
 
 @Plugin(name = "JUL", category = "Core", elementType = "appender", printObject = true)
 public final class JULAppender extends AbstractAppender {
     protected static final Logger LOGGER = StatusLogger.getLogger();
+    protected static final String DEFAULT_FCQN = AbstractLogger.class.getName();
 
     private final JULManager manager;
 
@@ -58,8 +60,13 @@ public final class JULAppender extends AbstractAppender {
         record.setThrown(event.getThrown());
         record.setMillis(event.getMillis());
         record.setLoggerName(jul.getName() + "." + event.getLoggerName());
-        record.setSourceMethodName(event.getSource().getMethodName());
-        record.setSourceClassName(event.getFQCN());
+        StackTraceElement source = event.getSource();
+        if (source != null) {
+            record.setSourceClassName(source.getClassName());
+            record.setSourceMethodName(source.getMethodName());
+        } else if (!event.getFQCN().equals(DEFAULT_FCQN)) {
+            record.setSourceClassName(event.getFQCN());
+        }
         jul.log(record);
     }
 
