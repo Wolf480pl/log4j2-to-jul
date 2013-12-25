@@ -41,12 +41,13 @@ public class JULManager extends AbstractManager {
     }
 
     public static JULManager getJULManager(String name) {
-        return getManager(name, null, FACTORY);
+        return getManager(name, FACTORY, null);
     }
 
     private static JULManagerFactory FACTORY = new JULManagerFactory();
 
     private static class JULManagerFactory implements ManagerFactory<JULManager, Void> {
+        @Override
         public JULManager createManager(String name, Void data) {
             return new JULManager(name);
         }
