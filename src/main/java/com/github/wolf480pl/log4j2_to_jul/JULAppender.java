@@ -39,7 +39,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.status.StatusLogger;
 
-@Plugin(name = "JULAppender", category = "Core", elementType = "appender", printObject = true)
+@Plugin(name = "JUL", category = "Core", elementType = "appender", printObject = true)
 public final class JULAppender extends AbstractAppender {
     protected static final Logger LOGGER = StatusLogger.getLogger();
 
