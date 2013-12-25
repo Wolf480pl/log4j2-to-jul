@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.wolf480pl.log4j2_to_jul;
+package com.github.wolf480pl.log4j2_to_jul.appender;
 
 import java.util.logging.Logger;
 

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.wolf480pl.log4j2_to_jul;
+package com.github.wolf480pl.log4j2_to_jul.appender;
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -40,6 +40,8 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.spi.AbstractLogger;
 import org.apache.logging.log4j.status.StatusLogger;
 
+import com.github.wolf480pl.log4j2_to_jul.Util;
+
 @Plugin(name = "JUL", category = "Core", elementType = "appender", printObject = true)
 public final class JULAppender extends AbstractAppender {
     protected static final Logger LOGGER = StatusLogger.getLogger();
@@ -55,7 +57,7 @@ public final class JULAppender extends AbstractAppender {
 
     @Override
     public void append(LogEvent event) {
-        Level level = levelToJUL(event.getLevel());
+        Level level = Util.levelToJUL(event.getLevel());
         String message;
         Serializable ser = getLayout().toSerializable(event);
         if (ser instanceof String) {
@@ -81,27 +83,6 @@ public final class JULAppender extends AbstractAppender {
             record.setSourceClassName(event.getFQCN());
         }
         jul.log(record);
-    }
-
-    private Level levelToJUL(org.apache.logging.log4j.Level lvl) {
-        switch (lvl) {
-        case OFF:
-            return Level.OFF;
-        case FATAL:
-        case ERROR:
-            return Level.SEVERE;
-        case WARN:
-            return Level.WARNING;
-        case INFO:
-            return Level.INFO;
-        case DEBUG:
-            return Level.FINE;
-        case TRACE:
-            return Level.FINER;
-        case ALL:
-            return Level.ALL;
-        }
-        return null;
     }
 
     @PluginFactory
