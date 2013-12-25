@@ -59,7 +59,11 @@ public final class JULAppender extends AbstractAppender {
         java.util.logging.Logger jul = this.manager.getJUL();
         record.setThrown(event.getThrown());
         record.setMillis(event.getMillis());
-        record.setLoggerName(jul.getName() + "." + event.getLoggerName());
+        if (jul.getName().isEmpty()) {
+            record.setLoggerName(event.getLoggerName());
+        } else {
+            record.setLoggerName(jul.getName() + "." + event.getLoggerName());
+        }
         StackTraceElement source = event.getSource();
         if (source != null) {
             record.setSourceClassName(source.getClassName());
@@ -67,6 +71,7 @@ public final class JULAppender extends AbstractAppender {
         } else if (!event.getFQCN().equals(DEFAULT_FCQN)) {
             record.setSourceClassName(event.getFQCN());
         }
+        // TODO: Propagate the marker and thread name
         jul.log(record);
     }
 
@@ -92,7 +97,7 @@ public final class JULAppender extends AbstractAppender {
     }
 
     @PluginFactory
-    public static JULAppender createAppender(@PluginAttribute("name") String name, @PluginAttribute("ignoreExceptions") String ignore,
+    public static JULAppender createAppender(@PluginAttribute("name") String name, @PluginAttribute("logger") String logger, @PluginAttribute("ignoreExceptions") String ignore,
             @PluginElement("Layout") Layout<? extends Serializable> layout,
             @PluginElement("Filters") Filter filter) {
         boolean ignoreExceptions = Boolean.parseBoolean(ignore);
@@ -100,7 +105,10 @@ public final class JULAppender extends AbstractAppender {
             LOGGER.error("No name provided for JULAppender");
             return null;
         }
-        JULManager manager = JULManager.getJULManager(name);
+        if (logger == null) {
+            logger = "";
+        }
+        JULManager manager = JULManager.getJULManager(logger);
         if (manager == null) {
             return null;
         }
