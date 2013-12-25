@@ -44,6 +44,7 @@ import org.apache.logging.log4j.status.StatusLogger;
 public final class JULAppender extends AbstractAppender {
     protected static final Logger LOGGER = StatusLogger.getLogger();
     protected static final String DEFAULT_FCQN = AbstractLogger.class.getName();
+    protected static final String DEFAULT_PATTERN = "%m%rEx{0}";
 
     private final JULManager manager;
 
@@ -55,7 +56,15 @@ public final class JULAppender extends AbstractAppender {
     @Override
     public void append(LogEvent event) {
         Level level = levelToJUL(event.getLevel());
-        LogRecord record = new LogRecord(level, event.getMessage().getFormattedMessage());
+        String message;
+        Serializable ser = getLayout().toSerializable(event);
+        if (ser instanceof String) {
+            message = (String) ser;
+        } else {
+            byte[] bytes = getLayout().toByteArray(event);
+            message = new String(bytes);
+        }
+        LogRecord record = new LogRecord(level, message);
         java.util.logging.Logger jul = this.manager.getJUL();
         record.setThrown(event.getThrown());
         record.setMillis(event.getMillis());
@@ -71,7 +80,6 @@ public final class JULAppender extends AbstractAppender {
         } else if (!event.getFQCN().equals(DEFAULT_FCQN)) {
             record.setSourceClassName(event.getFQCN());
         }
-        // TODO: Propagate the marker and thread name
         jul.log(record);
     }
 
@@ -113,7 +121,7 @@ public final class JULAppender extends AbstractAppender {
             return null;
         }
         if (layout == null) {
-            layout = PatternLayout.createLayout(null, null, null, null, null);
+            layout = PatternLayout.createLayout(DEFAULT_PATTERN, null, null, null, null);
         }
         return new JULAppender(name, layout, filter, manager, ignoreExceptions);
     }
