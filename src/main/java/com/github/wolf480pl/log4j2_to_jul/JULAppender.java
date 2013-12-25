@@ -50,14 +50,17 @@ public final class JULAppender extends AbstractAppender {
         this.manager = manager;
     }
 
+    @Override
     public void append(LogEvent event) {
         Level level = levelToJUL(event.getLevel());
         LogRecord record = new LogRecord(level, event.getMessage().getFormattedMessage());
+        java.util.logging.Logger jul = this.manager.getJUL();
         record.setThrown(event.getThrown());
         record.setMillis(event.getMillis());
+        record.setLoggerName(jul.getName() + "." + event.getLoggerName());
         record.setSourceMethodName(event.getSource().getMethodName());
         record.setSourceClassName(event.getFQCN());
-        this.manager.getJUL().log(record);
+        jul.log(record);
     }
 
     private Level levelToJUL(org.apache.logging.log4j.Level lvl) {
