@@ -19,5 +19,5 @@ branches:
     - gh-pages
 env:
   global:
-    - secure: "Kx0u1CeIaX5xn3OiQQmbDKJXHexCHcoJ+HHPbUfLd27Amj8mgSb1igizwo+osuvi+oj4W+RPlSpfFHkaAKIlpEeFTcseHTGMQy+L486cQEpJRLHxWiu/hiqu8WDUXeBSqf3EkBwq1xzlzUlHiwH25zK1amXbwq17EpUhBlFgcVg="
-    - secure: "kpP7s/ECL/2qjTYW6cdVm3twcXr+2piauyy2oRG55F68EwtZBnuuiec7vh6GVMkEAZnPuW9YCxi/Cg0tUS9miWC+KFXXPf006n6uTm1vqKOFcdTbnsQNYZQSFvNJuw3BTbVgKM3HC6DRKmj1hPP0IFzdbm6daJLgsg6L8p+e8SM="
+    - secure: "YK1duLuPOwdw9PMmWft/iLMUlrRCSU2UTmDStPKjyPdbAg2zDXlW3Vr2QI0t2JdBP3SA3lvHGF9itcSOAkXRnelnXpH42NUWuzq5El0oz3G+cN2yfU8Rkq3xF6Bp3bNrgUKY7avgnvkhYuXOH7h7d5utHx26cPdIyUEzkS9CICI="
+    - secure: "R/tRi/RqoOdKmG3vUeu5lbwu8y/JW5us+wu060M6LeODpL+auRjfaLJCHqsS5tUsUAziQxvRNB/t5GXmh9UgS3Nyva2nhb2ox0uUvdConMac0xftHVLWI8rS6Pb+VMrEpG1g3bgvsm+sLHOUAPE6RT3dmCaVRvq5229lfZwvmqk="
