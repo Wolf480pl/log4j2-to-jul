@@ -103,10 +103,10 @@ public class JULLogger extends AbstractLogger {
             if (mkName.isEmpty()) {
                 msg = data.getFormattedMessage();
             } else {
-                msg = String.format(DEFAULT_FORMAT, mkName, data.getFormattedMessage());
+                msg = String.format(DEFAULT_FORMAT, data.getFormattedMessage(), mkName);
             }
         } else {
-            msg = String.format(this.format, mkName, data.getFormattedMessage());
+            msg = String.format(this.format, data.getFormattedMessage(), mkName);
         }
         LogRecord record = new LogRecord(Util.levelToJUL(level), msg);
         record.setThrown(t);
