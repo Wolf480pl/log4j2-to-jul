@@ -33,27 +33,47 @@ import org.apache.logging.log4j.spi.LoggerContextFactory;
 public class JULContextFactory implements LoggerContextFactory {
     private final ConcurrentMap<String, JULContext> map = new ConcurrentHashMap<>();
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Note that this method completely ignores all its arguments and just calls {@link #getContext(String) getContext("")}.
+     */
     @Override
-    public LoggerContext getContext(String fqcn, ClassLoader loader, boolean currentContext) {
+    public JULContext getContext(String fqcn, ClassLoader loader, boolean currentContext) {
         return getContext("");
     }
 
-    // TODO: This method won't really work until we make it possible for JULLogger to have a name different that the name of underlying java.util.logging.Logger
-    public LoggerContext getContext(String prefix) {
+    /**
+     * Creates a {@link JULContext} (or returns an existing one) with a specified prefix. All the loggers created by that context will use  their name appended after that prefix as the name of the underlaying {@link java.util.logging.Logger}.
+     * 
+     * @param prefix the prefix
+     * @return the {@link JULContext}.
+     */
+    public JULContext getContext(String prefix) {
         JULContext ctx = this.map.get(prefix);
         if (ctx != null) {
             return ctx;
         }
-        ctx = new JULContext();
+        ctx = new JULContext(prefix);
         final JULContext prev = this.map.putIfAbsent(prefix, ctx);
         return prev == null ? ctx : prev;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Note that this method completely ignores configLocation and just calls {@link #getContext(String, ClassLoader, boolean)}.
+     */
     @Override
-    public LoggerContext getContext(String fqcn, ClassLoader loader, boolean currentContext, URI configLocation) {
+    public JULContext getContext(String fqcn, ClassLoader loader, boolean currentContext, URI configLocation) {
         return getContext(fqcn, loader, currentContext);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Actually, it doesn't check if we know the given context. If it's a {@link JULContext}, we remove knowledge of any known JULContext with the same prefix.
+     */
     @Override
     public void removeContext(LoggerContext context) {
         if (context instanceof JULContext) {

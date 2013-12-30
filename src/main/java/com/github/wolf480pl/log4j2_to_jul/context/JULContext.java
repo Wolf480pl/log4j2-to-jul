@@ -64,7 +64,7 @@ public class JULContext implements LoggerContext {
         if (logger != null) {
             return logger;
         }
-        logger = new JULLogger(this.prefix + name);
+        logger = new JULLogger(name, this.prefix + name);
         final JULLogger prev = this.loggers.putIfAbsent(name, logger);
         return prev == null ? logger : prev;
     }
@@ -75,7 +75,7 @@ public class JULContext implements LoggerContext {
         if (logger != null) {
             return logger;
         }
-        logger = new JULLogger(this.prefix + name, messageFactory);
+        logger = new JULLogger(name, this.prefix + name, messageFactory);
         final JULLogger prev = this.loggers.putIfAbsent(name, logger);
         return prev == null ? logger : prev;
     }

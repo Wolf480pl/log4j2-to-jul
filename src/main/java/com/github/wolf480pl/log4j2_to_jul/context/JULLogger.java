@@ -41,86 +41,122 @@ import com.github.wolf480pl.log4j2_to_jul.Util;
  *
  */
 public class JULLogger extends AbstractLogger {
+    /**
+     * The default format for adding {@link Marker Markers} to the message. It prepends the marker name followed by {@code " - "} at the beginning of the message.
+     */
     public static final String DEFAULT_FORMAT = "%2$s - %1$s";
+    /**
+     * A passthru format - leaves the message intact.
+     */
     public static final String PASSTHRU_FORMAT = "%s";
     private final Logger jul;
-    private final String format;
+    private String format;
 
     /**
-     * Creates a new JULLogger redirecting log messages to the given {@link java.util.logging.Logger}.
-     * <p>
-     * For messages logged with this logger that have a non-empty {@link Marker}, the {@link #DEFAULT_FORMAT} will be used to add the marker to the message string. Messages that have empty ({@code null} or {@link Marker#getName() getName()} {@code == ""}) {@link Marker} will be passed to {@link java.util.logging.Logger} intact.
+     * Creates a new JULLogger redirecting log messages to the given {@link java.util.logging.Logger}, with the same name as the given logger.
      * 
      * @param jul the {@link java.util.logging.Logger} to which messages should be redirected
      */
     public JULLogger(Logger jul) {
-        this(jul, null);
+        this(jul.getName(), jul);
     }
 
     /**
-     * Creates a new JULLogger redirecting log messages to the given {@link java.util.logging.Logger}.
-     * <p>
-     * Messages logged with this logger will be formatted with the specified format. The format will be used like `message = {@link String#format(String, Object...) String.format(format, message, marker)}` so it can be used to add marker to the message.
+     * Creates a new JULLogger redirecting log messages to the given {@link java.util.logging.Logger}, with the same name as the given logger.
      * 
      * @param jul the {@link java.util.logging.Logger} to which messages should be redirected
-     * @param format the format string which should be used
+     * @param messageFactory the message factory, if null then use the default message factory
      */
-    public JULLogger(Logger jul, String format) {
-        super(jul.getName());
-        this.jul = jul;
-        this.format = format;
+    public JULLogger(Logger jul, MessageFactory messageFactory) {
+        this(jul.getName(), jul, messageFactory);
     }
 
     /**
-     * Creates a new JULLogger redirecting log messages to a {@link java.util.logginLogger} with the given name.
-     * <p>
-     * For messages logged with this logger that have a non-empty {@link Marker}, the {@link #DEFAULT_FORMAT} will be used to add the marker to the message string. Messages that have empty ({@code null} or {@link Marker#getName() getName()} {@code == ""}) {@link Marker} will be passed to {@link java.util.logging.Logger} intact.
+     * Creates a new JULLogger with the specified name, redirecting log messages to a {@link java.util.logging.Logger} with the same name.
      * 
-     * @param name name of the {@link java.util.logging.Logger} to which messages should be redirected
+     * @param name name of this logger
      */
     public JULLogger(String name) {
-        this(name, (String) null);
+        this(name, name);
     }
 
     /**
-     * Creates a new JULLogger redirecting log messages to a {@link java.util.logginLogger} with the given name.
-     * <p>
-     * Messages logged with this logger will be formatted with the specified format. The format will be used like `message = {@link String#format(String, Object...) String.format(format, message, marker)}` so it can be used to add marker to the message.
+     * Creates a new JULLogger with the specified name, redirecting log messages to a {@link java.util.logging.Logger} with the same name.
      * 
-     * @param name name of the {@link java.util.logging.Logger} to which messages should be redirected
-     * @param format the format string which should be used
-     */
-    public JULLogger(String name, String format) {
-        super(name);
-        this.jul = Logger.getLogger(name);
-        this.format = format;
-    }
-
-    /**
-     * Creates a new JULLogger redirecting log messages to a {@link java.util.logginLogger} with the given name.
-     * <p>
-     * For messages logged with this logger that have a non-empty {@link Marker}, the {@link #DEFAULT_FORMAT} will be used to add the marker to the message string. Messages that have empty ({@code null} or {@link Marker#getName() getName()} {@code == ""}) {@link Marker} will be passed to {@link java.util.logging.Logger} intact.
-     * 
-     * @param name name of the {@link java.util.logging.Logger} to which messages should be redirected
+     * @param name name of this logger
      * @param messageFactory the message factory, if null then use the default message factory
      */
     public JULLogger(String name, MessageFactory messageFactory) {
-        this(name, messageFactory, null);
+        this(name, name, messageFactory);
     }
 
     /**
-     * Creates a new JULLogger redirecting log messages to a {@link java.util.logginLogger} with the given name.
-     * <p>
-     * Messages logged with this logger will be formatted with the specified format. The format will be used like `message = {@link String#format(String, Object...) String.format(format, message, marker)}` so it can be used to add marker to the message.
+     * Creates a new JULLogger with the specified name, redirecting log messages to a {@link java.util.logging.Logger} with the name {@code julName}.
      * 
-     * @param name name of the {@link java.util.logging.Logger} to which messages should be redirected
-     * @param messageFactory the message factory, if null then use the default message factory
-     * @param format the format string which should be used
+     * @param name name of this logger
+     * @param julName name of the {@link java.util.logging.Logger} to which the messages should be redirected
      */
-    public JULLogger(String name, MessageFactory messageFactory, String format) {
+    public JULLogger(String name, String julName) {
+        this(name, Logger.getLogger(julName));
+    }
+
+    /**
+     * Creates a new JULLogger with the specified name, redirecting log messages to a {@link java.util.logging.Logger} with the name {@code julName}.
+     * 
+     * @param name name of this logger
+     * @param julName name of the {@link java.util.logging.Logger} to which the messages should be redirected
+     * @param messageFactory the message factory, if null then use the default message factory
+     */
+    public JULLogger(String name, String julName, MessageFactory messageFactory) {
+        this(name, Logger.getLogger(julName), messageFactory);
+    }
+
+    /**
+     * Creates a new JULLogger with he specified name, redirecting log messages to the given {@link java.util.logging.Logger}.
+     * 
+     * @param name name of this logger
+     * @param jul the {@link java.util.logging.Logger} to which messages should be redirected
+     */
+    public JULLogger(String name, Logger jul) {
+        super(name);
+        this.jul = jul;
+    }
+
+    /**
+     * Creates a new JULLogger with he specified name, redirecting log messages to the given {@link java.util.logging.Logger}.
+     * 
+     * @param name name of this logger
+     * @param jul the {@link java.util.logging.Logger} to which messages should be redirected
+     * @param messageFactory the message factory, if null then use the default message factory
+     */
+    public JULLogger(String name, Logger jul, MessageFactory messageFactory) {
         super(name, messageFactory);
-        this.jul = Logger.getLogger(name);
+        this.jul = jul;
+    }
+
+    /**
+     * Sets the format to apply on the messages before passing them to {@link java.util.logging.Logger}.
+     * <p>
+     * The format string is in the same syntax as in {@link String#format(String, Object...)}.
+     * <p>
+     * If the format string is null (the default), for messages logged with this logger that have a non-empty {@link Marker}, the {@link #DEFAULT_FORMAT} will be used to add the marker to the message string. Messages that have empty ({@code null} or {@link Marker#getName() getName()} {@code == ""}) {@link Marker} will be passed to {@link java.util.logging.Logger} intact.
+     * <p>
+     * If the format string is not null, messages logged with this logger will be formatted with it. The format will be used like `message = {@link String#format(String, Object...) String.format(format, message, marker)}` so it can be used to add marker to the message.
+     * 
+     * @param format the format string
+     */
+    public void setFormat(String format) {
         this.format = format;
+    }
+
+    /**
+     * Returns the format to apply on the messages before passing them to {@link java.util.logging.Logger}.
+     * 
+     * @see #setFormat(String)
+     * @return the format string
+     */
+    public String getFormat() {
+        return this.format;
     }
 
     @Override
