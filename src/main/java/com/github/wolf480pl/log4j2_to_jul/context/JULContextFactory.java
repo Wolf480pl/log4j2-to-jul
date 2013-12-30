@@ -38,6 +38,7 @@ public class JULContextFactory implements LoggerContextFactory {
         return getContext("");
     }
 
+    // TODO: This method won't really work until we make it possible for JULLogger to have a name different that the name of underlying java.util.logging.Logger
     public LoggerContext getContext(String prefix) {
         JULContext ctx = this.map.get(prefix);
         if (ctx != null) {
