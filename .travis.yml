@@ -12,7 +12,7 @@ after_success:
 notifications:
     email: false
     webhooks:
-      - http://n.tkte.ch/h/1330/k8sXYF-6jY2n3zKtF5Rf3kaX
+      - http://n.tkte.ch/h/1884/9WphOxqZshhHVS7_p960PYMO
 branches:
   except:
     - travis
