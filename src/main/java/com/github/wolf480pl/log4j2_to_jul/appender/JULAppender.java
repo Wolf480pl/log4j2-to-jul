@@ -43,7 +43,7 @@ import org.apache.logging.log4j.status.StatusLogger;
 import com.github.wolf480pl.log4j2_to_jul.Util;
 
 /**
- * A Log4j2 appender that redirects all log events to a specified {@link java.util.logging.Logger}. It's config name is JUL.
+ * A Log4j2 appender that redirects all log events to a specified {@link java.util.logging.Logger}. It's config name is {@code JUL}.
  */
 @Plugin(name = "JUL", category = "Core", elementType = "appender", printObject = true)
 public final class JULAppender extends AbstractAppender {

@@ -17,6 +17,7 @@ Versioning scheme and public API
 This project uses [Semantic Versioning][SemVer].
 
 The public API is defined as:
+
 * the documentation below, excluding repository information
 * every class, method, field, or method argument in this project that has a non-empty description in [javadocs][JavaDocs], along with its description.
   If some class, method, or field has empty description in the javadocs, then it's not part of the public API.
