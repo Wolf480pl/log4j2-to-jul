@@ -30,13 +30,21 @@ import java.util.concurrent.ConcurrentMap;
 import org.apache.logging.log4j.spi.LoggerContext;
 import org.apache.logging.log4j.spi.LoggerContextFactory;
 
+/**
+ * An implementation of LogContextFactory for creating instances of {@link JULContext}.
+ */
 public class JULContextFactory implements LoggerContextFactory {
     private final ConcurrentMap<String, JULContext> map = new ConcurrentHashMap<>();
 
     /**
-     * {@inheritDoc}
+     * Creates a {@link JULContext}.
      * <p>
-     * Note that this method completely ignores all its arguments and just calls {@link #getContext(String) getContext("")}.
+     * If the loader is null, just calls {@link #getContext(String) getContext("")}. Otherwise the behavior is <strong>undefined</strong>, and is a subject to change when new features are added.
+     * 
+     * @param fqcn does nothing
+     * @param loader does nothing if null; if not null, some behavior may be implemented in the future
+     * @param currentContext does nothing
+     * @return the JULContext.
      */
     @Override
     public JULContext getContext(String fqcn, ClassLoader loader, boolean currentContext) {
@@ -44,7 +52,7 @@ public class JULContextFactory implements LoggerContextFactory {
     }
 
     /**
-     * Creates a {@link JULContext} (or returns an existing one) with a specified prefix. All the loggers created by that context will use  their name appended after that prefix as the name of the underlaying {@link java.util.logging.Logger}.
+     * Creates a {@link JULContext} (or returns an existing one) with a specified prefix. All the loggers created by that context will use  their name appended after that prefix as the name of the underlying {@link java.util.logging.Logger}.
      * 
      * @param prefix the prefix
      * @return the {@link JULContext}.
@@ -60,9 +68,16 @@ public class JULContextFactory implements LoggerContextFactory {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a {@link JULContext}.
      * <p>
-     * Note that this method completely ignores configLocation and just calls {@link #getContext(String, ClassLoader, boolean)}.
+     * <strong>If's undefined (and a subject to change when new features are added) whether any of the arguments of this method has any impact on the returned JULContext</strong>
+     * 
+     * @param fqcn the fully qualified class name of the caller - may be implemented in the future
+     * @param loader the ClassLoader to use or null - may be implemented in the future
+     * @param currentContext if true returns the current Context, if false returns the Context appropriate
+     * for the caller if a more appropriate Context can be determined - may be implemented in the future
+     * @param configLocation the location of the configuration for the JULContext - may be implemented in the future
+     * @return the JULContext.
      */
     @Override
     public JULContext getContext(String fqcn, ClassLoader loader, boolean currentContext, URI configLocation) {
@@ -70,9 +85,12 @@ public class JULContextFactory implements LoggerContextFactory {
     }
 
     /**
-     * {@inheritDoc}
+     * Removes knowledge of a {@link JULContext}.
      * <p>
-     * Actually, it doesn't check if we know the given context. If it's a {@link JULContext}, we remove knowledge of any known JULContext with the same prefix.
+     * Does nothing if the context is not an instance of {@link JULContext}.
+     * If the context is an instance of {@link JULContext}, but is not known to this factory, then the behavior is undefined, and is a subject to change when new features are added.
+     * 
+     * @param context the context to remove
      */
     @Override
     public void removeContext(LoggerContext context) {

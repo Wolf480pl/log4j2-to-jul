@@ -30,6 +30,9 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.MessageFactory;
 import org.apache.logging.log4j.spi.LoggerContext;
 
+/**
+ * An implementation of LoggerContext that creates {@link JULLogger JULLoggers} which redirect all the logging to a {@link java.util.logging.Logger} whose name is the name of the JULLogger appended after the prefix of the JULContext.
+ */
 public class JULContext implements LoggerContext {
     private final String prefix;
     private final java.util.logging.Logger parent;
@@ -49,15 +52,30 @@ public class JULContext implements LoggerContext {
         this.parent = java.util.logging.Logger.getLogger(prefix);
     }
 
+    /**
+     * Returns the prefix of this JULLogger
+     * 
+     * @return the prefix
+     */
     public String getPrefix() {
         return this.prefix;
     }
 
+    /**
+     * Returns the {@link java.util.logging.Logger} with the same name as the prefix of this JULContext
+     * 
+     * @return a {@link java.util.logging.Logger}
+     */
     @Override
-    public Object getExternalContext() {
+    public java.util.logging.Logger getExternalContext() {
         return this.parent;
     }
 
+    /**
+     * Returns a {@link JULLogger} with the specified name, and the name prepended with the prefix of this JULContext as its julName (the name of the underlaying {@link java.util.logging.Logger})
+     * 
+     * @param name name of the logger to return
+     */
     @Override
     public Logger getLogger(String name) {
         JULLogger logger = this.loggers.get(name);
@@ -69,6 +87,12 @@ public class JULContext implements LoggerContext {
         return prev == null ? logger : prev;
     }
 
+    /**
+     * Returns a {@link JULLogger} with the specified name, and the name prepended with the prefix of this JULContext as its julName (the name of the underlaying {@link java.util.logging.Logger})
+     * 
+     * @param name name of the logger to return
+     * @param messageFactory the message factory is used only when creating a logger, subsequent use fails silently
+     */
     @Override
     public Logger getLogger(String name, MessageFactory messageFactory) {
         JULLogger logger = this.loggers.get(name);
@@ -80,6 +104,12 @@ public class JULContext implements LoggerContext {
         return prev == null ? logger : prev;
     }
 
+    /**
+     * Detects if a Logger with the specified name exists.
+     * 
+     * @param name The Logger name to search for.
+     * @return true if the Logger exists, false otherwise.
+     */
     @Override
     public boolean hasLogger(String name) {
         return this.loggers.containsKey(name);

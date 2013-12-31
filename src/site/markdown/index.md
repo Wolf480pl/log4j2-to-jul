@@ -12,10 +12,15 @@ Log4j2 to JUL uses Maven to handle its dependencies.
 * Install [Maven 2 or 3](http://maven.apache.org/download.html)
 * Checkout this repo and run: `mvn clean install`
 
-Versioning scheme
------------------
+Versioning scheme and public API
+--------------------------------
 This project uses [Semantic Versioning][SemVer].
-The public API is defined as everything in this project that has a non-empty description in [javadocs][JavaDocs].
+
+The public API is defined as:
+* the documentation below, excluding repository information
+* every class, method, field, or method argument in this project that has a non-empty description in [javadocs][JavaDocs], along with its description.
+  If some class, method, or field has empty description in the javadocs, then it's not part of the public API.
+  If the description of a class, method, field, or method argument specifically states that the behavior is undefined, then its existance and type is part of the public API, but its behavior is not.
 
 Using with your own project
 ---------------------------
@@ -52,6 +57,15 @@ Note that the layout here is used to produce the content of the message field in
 
 ### As Log4j2 Logger ###
 If you have a class to which you can pass a Logger from Log4j2 api, and you want to redirect its logging, you can pass it an instance of JULLogger (`com.github.wolf480pl.log4j2_to_jul.context.JULLogger`) which will redirect all the logging done through that logger to a specified java.util.logging.Logger
+
+Log level mapping
+-----------------
+    FATAL -> SEVERE
+    ERROR -> SEVERE
+    WARN  -> WARNING
+    INFO  -> INFO
+    DEBUG -> FINE
+    TRACE -> FINER
 
 
 [GitHub]: https://github.com/Wolf480pl/log4j2-to-jul

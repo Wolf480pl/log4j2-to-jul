@@ -42,6 +42,9 @@ import org.apache.logging.log4j.status.StatusLogger;
 
 import com.github.wolf480pl.log4j2_to_jul.Util;
 
+/**
+ * A Log4j2 appender that redirects all log events to a specified {@link java.util.logging.Logger}. It's config name is JUL.
+ */
 @Plugin(name = "JUL", category = "Core", elementType = "appender", printObject = true)
 public final class JULAppender extends AbstractAppender {
     protected static final Logger LOGGER = StatusLogger.getLogger();
@@ -55,6 +58,9 @@ public final class JULAppender extends AbstractAppender {
         this.manager = manager;
     }
 
+    /**
+     * Logs the event by redirecting its contents to the {@link java.util.logging.Logger} configured in this appender.
+     */
     @Override
     public void append(LogEvent event) {
         Level level = Util.levelToJUL(event.getLevel());
@@ -85,6 +91,16 @@ public final class JULAppender extends AbstractAppender {
         jul.log(record);
     }
 
+    /**
+     * Creates a new instance of JULAppender.
+     * 
+     * @param name name of the appender
+     * @param logger name of the {@link java.util.logging.Logger} to which log events should be redirected
+     * @param ignore if true, no exceptions from this appender will be propagated to the application; if false, then undefined (and is a subject to change when new features are added)
+     * @param layout the layout to use to format the message field of {@link java.util.logging.LogRecord}
+     * @param filter the filter to associate with this appender
+     * @return
+     */
     @PluginFactory
     public static JULAppender createAppender(@PluginAttribute("name") String name, @PluginAttribute("logger") String logger, @PluginAttribute("ignoreExceptions") String ignore,
             @PluginElement("Layout") Layout<? extends Serializable> layout,

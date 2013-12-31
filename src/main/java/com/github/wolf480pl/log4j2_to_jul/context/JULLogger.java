@@ -36,9 +36,6 @@ import com.github.wolf480pl.log4j2_to_jul.Util;
 
 /**
  * An implementation of {@link org.apache.logging.log4j.Logger} that redirects all the log messages to specified {@link java.util.logging.Logger}.
- * 
- * @author wolf480
- *
  */
 public class JULLogger extends AbstractLogger {
     /**
@@ -159,31 +156,84 @@ public class JULLogger extends AbstractLogger {
         return this.format;
     }
 
+    /**
+     * Determine if logging is enabled for the specified level.
+     * 
+     * @param level the logging Level to check.
+     * @param marker a Marker, not checked
+     * @param data the Message, not checked
+     * @param t a Throwable, not checked
+     * @return true if logging is enabled, false otherwise
+     */
     @Override
     protected boolean isEnabled(Level level, Marker marker, Message data, Throwable t) {
         return this.jul.isLoggable(Util.levelToJUL(level));
     }
 
+    /**
+     * Determine if logging is enabled for the specified level.
+     * 
+     * @param level the logging Level to check.
+     * @param marker a Marker, not checked
+     * @param data the Message, not checked
+     * @param t a Throwable, not checked
+     * @return true if logging is enabled, false otherwise
+     */
     @Override
     protected boolean isEnabled(Level level, Marker marker, Object data, Throwable t) {
         return this.jul.isLoggable(Util.levelToJUL(level));
     }
 
+    /**
+     * Determine if logging is enabled for the specified level.
+     * 
+     * @param level the logging Level to check.
+     * @param marker a Marker, not checked
+     * @param data the Message, not checked
+     * @return true if logging is enabled, false otherwise
+     */
     @Override
     protected boolean isEnabled(Level level, Marker marker, String data) {
         return this.jul.isLoggable(Util.levelToJUL(level));
     }
 
+    /**
+     * Determine if logging is enabled for the specified level.
+     * 
+     * @param level the logging Level to check.
+     * @param marker a Marker, not checked
+     * @param data the Message, not checked
+     * @param p1 the parameters, not checked
+     * @return true if logging is enabled, false otherwise
+     */
     @Override
     protected boolean isEnabled(Level level, Marker marker, String data, Object... p1) {
         return this.jul.isLoggable(Util.levelToJUL(level));
     }
 
+    /**
+     * Determine if logging is enabled for the specified level.
+     * 
+     * @param level the logging Level to check.
+     * @param marker a Marker, not checked
+     * @param data the Message, not checked
+     * @param t a Throwable, not checked
+     * @return true if logging is enabled, false otherwise
+     */
     @Override
     protected boolean isEnabled(Level level, Marker marker, String data, Throwable t) {
         return this.jul.isLoggable(Util.levelToJUL(level));
     }
 
+    /**
+     * Logs a message with location information by redirecting it to the underlaying {@link java.util.logging.Logger}.
+     *
+     * @param marker the Marker
+     * @param fqcn   the fully qualified class name of the <b>caller</b>
+     * @param level  the logging level
+     * @param data   the Message.
+     * @param t      a Throwable or null.
+     */
     @Override
     public void log(Marker marker, String fqcn, Level level, Message data, Throwable t) {
         final String msg;
