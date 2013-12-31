@@ -116,20 +116,30 @@
 <li>Checkout this repo and run: <tt>mvn clean install</tt></li>
 </ul></div>
 <div class="section">
-<h2>Versioning scheme<a name="Versioning_scheme"></a></h2>
-<p>This project uses <a class="externalLink" href="http://semver.org/">Semantic Versioning</a>. The public API is defined as everything in this project that has a non-empty description in <a class="externalLink" href="https://wolf480pl.github.com/log4j2-to-jul/apidocs/">javadocs</a>.</p></div>
+<h2>Versioning scheme and public API<a name="Versioning_scheme_and_public_API"></a></h2>
+<p>This project uses <a class="externalLink" href="http://semver.org/">Semantic Versioning</a>.</p>
+<p>The public API is defined as:</p>
+
+<ul>
+  
+<li>the documentation below, excluding repository information</li>
+  
+<li>every class, method, field, or method argument in this project that has a non-empty description in <a class="externalLink" href="https://wolf480pl.github.com/log4j2-to-jul/apidocs/">javadocs</a>, along with its description.  If some class, method, or field has empty description in the javadocs, then it&#x2019;s not part of the public API.  If the description of a class, method, field, or method argument specifically states that the behavior is undefined, then its existance and type is part of the public API, but its behavior is not.</li>
+</ul></div>
 <div class="section">
 <h2>Using with your own project<a name="Using_with_your_own_project"></a></h2>
-<p>If you&#x2019;re using <a class="externalLink" href="http://maven.apache.org/download.html">Maven</a> to manage project dependencies, simply include the following in your <tt>pom.xml</tt>:</p>
+<p>Add this project to your dependencies, as described in <a href="dependency-info.html">Dependency Information</a>. This project is deployed to Sonatype OSSRH snapshots repo (<a class="externalLink" href="https://oss.sonatype.org/content/repositories/snapshots)">https://oss.sonatype.org/content/repositories/snapshots)</a>. If you&#x2019;re using don&#x2019;t already have OSSRH in your repository list, you&#x2019;ll need to add it as well. If you&#x2019;re using <a class="externalLink" href="http://maven.apache.org/download.html">Maven</a>, simply add the following to your pom.xml:</p>
 
 <div class="source">
-<pre>&lt;dependency&gt;
-    &lt;groupId&gt;com.github.wolf480pl&lt;/groupId&gt;
-    &lt;artifactId&gt;log4j2-to-jul&lt;/artifactId&gt;
-    &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;
+<pre>&lt;repository&gt;
+    &lt;id&gt;sonatype-nexus-snapshots&lt;/id&gt;
+    &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
+    &lt;snapshots&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;updatePolicy&gt;always&lt;/updatePolicy&gt;
+    &lt;/snapshots&gt;
+&lt;/repository&gt;
 </pre></div>
-<p>This project going to be in Sonatype OSSRH repo soon (and eventually in Central), for now you&#x2019;ll have to compile and install it in your local maven repo manually.</p>
 <div class="section">
 <h3>As Log4j2 implementation<a name="As_Log4j2_implementation"></a></h3>
 <p>If you want to use it as a replacement of Log4j2 implementation, and redirect all the logging done with Log4j2 api, that&#x2019;s all you need to do. Just make sure you don&#x2019;t have other Log4j2 implementation with higher priority in your classpath. </p></div>
@@ -150,6 +160,17 @@
 <div class="section">
 <h3>As Log4j2 Logger<a name="As_Log4j2_Logger"></a></h3>
 <p>If you have a class to which you can pass a Logger from Log4j2 api, and you want to redirect its logging, you can pass it an instance of JULLogger (<tt>com.github.wolf480pl.log4j2_to_jul.context.JULLogger</tt>) which will redirect all the logging done through that logger to a specified java.util.logging.Logger</p></div></div>
+<div class="section">
+<h2>Log level mapping<a name="Log_level_mapping"></a></h2>
+
+<div class="source">
+<pre>FATAL -&gt; SEVERE
+ERROR -&gt; SEVERE
+WARN  -&gt; WARNING
+INFO  -&gt; INFO
+DEBUG -&gt; FINE
+TRACE -&gt; FINER
+</pre></div></div>
       </div>
     </div>
     <div class="clear">
