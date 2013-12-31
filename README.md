@@ -29,9 +29,10 @@ If you're using [Maven](http://maven.apache.org/download.html) to manage project
     <dependency>
         <groupId>com.github.wolf480pl</groupId>
         <artifactId>log4j2-to-jul</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.0-SNAPSHOT</version>
     </dependency>
 ```
+This project going to be in Sonatype OSSRH repo soon (and eventually in Central), for now you'll have to compile and install it in your local maven repo manually.
 
 ### As Log4j2 implementation ###
 If you want to use it as a replacement of Log4j2 implementation, and redirect all the logging done with Log4j2 api, that's all you need to do.
