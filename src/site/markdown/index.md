@@ -20,7 +20,7 @@ The public API is defined as everything in this project that has a non-empty des
 Using with your own project
 ---------------------------
 Add this project to your dependencies, as described in [Dependency Information][dependency-info.html].
-This project is in Sonatype OSSRH snapshots repo (https://oss.sonatype.org/content/repositories/snapshots). If you're using don't already have OSSRH in your repository list, you'll need to add it as well.
+This project is deployed to Sonatype OSSRH snapshots repo (https://oss.sonatype.org/content/repositories/snapshots). If you're using don't already have OSSRH in your repository list, you'll need to add it as well.
 If you're using [Maven](http://maven.apache.org/download.html), simply add the following to your pom.xml:
 
     <repository>
